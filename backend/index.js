@@ -1,9 +1,14 @@
 import express, { request, response } from "express";
-import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import { Book } from "./models/bookModel.js";
 
 const app = express();
+
+dotenv.config();
+
+// Destructuring of process.env variables
+const { PORT, DB_URL } = process.env;
 
 // Middleware for parsing request body
 app.use(express.json());
@@ -69,9 +74,9 @@ app.get("/books/:id", async (request, response) => {
 })
 
 mongoose
-  .connect(mongoDBURL)
+  .connect(DB_URL)
   .then(() => {
-    console.log("Connected to MongoDB database");
+    console.log("Connected to remote database");
     app.listen(PORT, () => {
       console.log(`App listening on port: ${PORT}`);
     });
